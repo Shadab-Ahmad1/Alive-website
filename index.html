@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Alive</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Akshar:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
+<link rel="stylesheet" href="./css/style.css" />
+<style>
+    #checkout-progress {
+  width: 90%;
+  margin: 0px auto;
+  font-size: 2.5em;
+  font-weight: 900;
+  position: relative;
+}
+@media (max-width: 767px) {
+  #checkout-progress {
+    font-size: 1.5em;
+  }
+}
+#checkout-progress:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  height: 20px;
+  width: 100%;
+  background-color: #ccc;
+  -webkit-transform: translateY(-50%) perspective(1000px);
+          transform: translateY(-50%) perspective(1000px);
+}
+#checkout-progress:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  height: 20px;
+  width: 100%;
+  background: linear-gradient(90deg, rgba(145,40,183,1) 0%, rgba(150,43,119,1) 50%, rgba(89,15,124,1) 100%);
+  -webkit-transform: scaleX(0) translateY(-50%) perspective(1000px);
+          transform: scaleX(0) translateY(-50%) perspective(1000px);
+  -webkit-transform-origin: left center;
+          transform-origin: left center;
+  transition: -webkit-transform 0.5s ease;
+  transition: transform 0.5s ease;
+  transition: transform 0.5s ease, -webkit-transform 0.5s ease;
+}
+#checkout-progress.step-2:after {
+  -webkit-transform: scaleX(0.333) translateY(-50%) perspective(1000px);
+          transform: scaleX(0.333) translateY(-50%) perspective(1000px);
+}
+#checkout-progress.step-3:after {
+  -webkit-transform: scaleX(0.666) translateY(-50%) perspective(1000px);
+          transform: scaleX(0.666) translateY(-50%) perspective(1000px);
+}
+#checkout-progress.step-4:after {
+  -webkit-transform: scaleX(1) translateY(-50%) perspective(1000px);
+          transform: scaleX(1) translateY(-50%) perspective(1000px);
+}
+#checkout-progress.step-5:after {
+  -webkit-transform: scaleX(1) translateY(-50%) perspective(1000px);
+          transform: scaleX(1) translateY(-50%) perspective(1000px);
+}
+#checkout-progress.step-6:after {
+  -webkit-transform: scaleX(1) translateY(-50%) perspective(1000px);
+          transform: scaleX(1) translateY(-50%) perspective(1000px);
+}
+#checkout-progress .progress-bar {
+  width: 100%;
+  display: flex;
+  height: 100px;
+  justify-content: space-between;
+  align-items: center;
+}
+#checkout-progress .progress-bar .step {
+  z-index: 2;
+  position: relative;
+}
+#checkout-progress .progress-bar .step .step-label {
+  position: absolute;
+  top: calc(100% + 25px);
+  left: 50%;
+  -webkit-transform: translateX(-50%) perspective(1000px);
+          transform: translateX(-50%) perspective(1000px);
+  white-space: nowrap;
+  font-size: 0.4em;
+  font-weight: 600;
+  color: #ccc;
+  transition: 0.3s ease;
+}
+@media (max-width: 767px) {
+  #checkout-progress .progress-bar .step .step-label {
+    top: calc(100% + 15px);
+  }
+}
+#checkout-progress .progress-bar .step span {
+  color: #ccc;
+  transition: 0.3s ease;
+  display: block;
+  -webkit-transform: translate3d(0, 0, 0) scale(1) perspective(1000px);
+          transform: translate3d(0, 0, 0) scale(1) perspective(1000px);
+}
+#checkout-progress .progress-bar .step .fa-check {
+  color: #fff;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transition: -webkit-transform 0.3s ease;
+  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, -webkit-transform 0.3s ease;
+  -webkit-transform: translate3d(-50%, -50%, 0) scale(0) perspective(1000px);
+          transform: translate3d(-50%, -50%, 0) scale(0) perspective(1000px);
+}
+#checkout-progress .progress-bar .step.active span, #checkout-progress .progress-bar .step.active .step-label {
+  color: #962B77;
+}
+#checkout-progress .progress-bar .step.valid .fa-check {
+  -webkit-transform: translate3d(-50%, -50%, 0) scale(1) perspective(1000px);
+          transform: translate3d(-50%, -50%, 0) scale(1) perspective(1000px);
+}
+#checkout-progress .progress-bar .step.valid span {
+  color: #fff;
+  font-size: 0px;
+  -webkit-transform: translate3d(0, 0, 0) scale(2) perspective(1000px);
+          transform: translate3d(0, 0, 0) scale(2) perspective(1000px);
+}
+#checkout-progress .progress-bar .step.valid .step-label {
+      color: #962B77 !important;
+      margin-top: 13px;
+}
+#checkout-progress .progress-bar .step:after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%) perspective(1000px);
+          transform: translate(-50%, -50%) perspective(1000px);
+  width: 75px;
+  height: 75px;
+  background-color: #fff;
+  border-radius: 50%;
+  border: 5px solid #ccc;
+  transition: 0.3s ease;
+}
+@media (max-width: 767px) {
+  #checkout-progress .progress-bar .step:after {
+    width: 40px;
+    height: 40px;
+  }
+}
+#checkout-progress .progress-bar .step.active:after {
+  border: 5px solid #962B77;
+}
+#checkout-progress .progress-bar .step.valid:after {
+    background: linear-gradient(90deg, rgba(145,40,183,1) 0%, rgba(150,43,119,1) 50%, rgba(89,15,124,1) 100%);
+    border: 5px solid #962B77;
+}
+
+.button-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  width: 100%;
+  margin: 100px auto 0px;
+}
+.button-container .btn {
+  display: inline-block;
+  background-color: #2C3E50;
+  color: #fff;
+  padding: 10px 15px;
+  border-radius: 10px;
+  text-transform: uppercase;
+  font-weight: 900;
+  transition: 0.3s ease;
+  cursor: pointer;
+  text-align: center;
+}
+@media (max-width: 767px) {
+  .button-container .btn {
+    width: 37%;
+    margin-bottom: 15px;
+  }
+}
+.button-container .btn:hover {
+  background-color: transparent;
+  color: #fff;
+  -webkit-transform: scale(1.02) perspective(1000px);
+          transform: scale(1.02) perspective(1000px);
+}
+
+</style>
+</head>
+  <body>
+    <main>
+      <header id="header">
+        <nav>
+          <div class="container">
+            <div class="logo">
+              <img src="./img/Mask Group 2.png" alt="" />
+            </div>
+            <div class="links">
+              <ul>
+                <li>
+                  <a href="#header">HOME</a>
+                </li>
+                <li>
+                  <a href="#generate">GENEARTE</a>
+                </li>
+                <li>
+                  <a href="#about">LEARN HOW</a>
+                </li>
+                <li>
+                  <a href="#contact" class="active">CONTACT US</a>
+                </li>
+              </ul>
+            </div>
+            <div class="hamburger-menu">
+              <div class="bar"></div>
+            </div>
+          </div>
+        </nav>
+        <div class="header-content">
+          <div class="container grid-2">
+            <div class="column-1">
+              <h2 class="header-title">THE WORLD's FIRST SMART CONTRACT <br/>GENERATOR FOR THE ETHERUM BLOCKCHAIN</h2>
+              <div class="sec1-btn">
+              <a href="#" class="btn1">LEARN MORE</a>
+              <a href="#" class="btn">CONTACT US</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+<section class="testimonials" id="testimonials">
+  <div class="testimonial-container">
+    <div class="testimonial-heading">
+          <h2>TESTIMONIALS</h2>
+          <div class="row">
+            <div class="testi-col testi-img">
+              <img src="img/Group-3.png">
+              <h4>NAME</h4>
+              <p>is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, </p>
+            </div>
+            <div class="testi-col testi-img1">
+              <img src="img/Group-4.png">
+              <h4>NAME</h4>
+              <p>is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, </p>
+            </div>
+            <div class="testi-col testi-img2">
+              <img src="img/Group-5.png">
+              <h4>NAME</h4>
+              <p>is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, </p>
+            </div>
+          </div>
+    
+  </div>
+</section>
+  <section class="smart-contract section" id="smart-contract">
+    <div class="smart-container">
+        <div class="heading">
+          <h2>SMART CONTRACT GENERATOR</h2>
+        </div>
+        <form id="form" name="myForm">
+<div class="step-1" id="checkout-progress" data-current-step="1">
+  <div class="progress-bar">
+    <div class="step step-1 active"><span> 1</span>
+      <div class="fa fa-check opaque"></div>
+      <div class="step-label"> Proposed</div>
+    </div>
+    <div class="step step-2"><span> 2</span>
+      <div class="fa fa-check opaque"></div>
+      <div class="step-label"> Approved</div>
+    </div>
+    <div class="step step-3"><span> 3</span>
+      <div class="fa fa-check opaque"></div>
+      <div class="step-label"> Under Implmentation</div>
+    </div>
+    <div class="step step-4"><span> 4</span>
+      <div class="fa fa-check opaque"></div>
+      <div class="step-label"> Implemented</div>
+    </div>
+    
+  </div>
+</div>
+<br><br><br>
+
+
+            <div class="smart-contract row" >
+            <div class="smart-column section1" >
+              <h3>NFT PROJECT<br> NAME</h3>
+               <fieldset>
+                 <input
+                 id="section1" style="display:block;"
+                 class="progress-feild next-step" type="text" name="next-step" placeholder="type here">
+              </fieldset>
+            </div>
+            <div class="smart-column section2" >
+              <h3>SIZE OF<br> COLLECTION</h3>
+              <fieldset>
+                <input 
+                id="section2"
+                style="display:none;"
+                class="progress-feild next-step" type="number" name="next-step" value="" placeholder="type here">
+              </fieldset>
+            </div>
+            <div class="smart-column3 section3" >
+              <h3>PRICE OF<br> NFT</h3>
+              <fieldset>
+                <input 
+                 style="display:none;"
+                id="section3"
+                class="progress-feild next-step" type="number" name="next-step" value="" placeholder="type here">             
+              </fieldset>
+            </div>
+
+            <div class="smart-column4 section4">
+              <h3> NFTs ALLOWED PER<br> TRANSACTION</h3>
+              <fieldset>
+                <input 
+                 id="section4"
+                  style="display:none;"
+                class="progress-feild next-step" type="number" name="next-step" value="" placeholder="type here">             
+              </fieldset>
+               </form>
+            </div>
+              
+        </div>
+        <div class="button-container">
+  <div class="btn btn-prev disabled"> previous step</div>
+  <div class="btn btn-next"> next step</div>
+  <div class="btn btn-submit" style="display:none;">Submit</div>
+</div>
+<div class="switch-btn">
+  <label class="switch">
+  <input type="checkbox">
+  <span class="slider round"></span>
+</label>
+</div>
+        <div class="row generate-btn-sec">
+          <div class="generate-btn" id="generate" style="display: none;">generate now</div>
+        </div>
+  </section>
+ 
+<section class="services" id="services">
+  <div class="service-container">
+              <div class="">
+                <h2> ADD ON SERVICE</h2>
+              </div>
+      <div class="service-row">
+        <div class="service-col">
+                <div class="inner-row"> 
+                  <div class="inner-col card">
+                    <div>
+                      <h4> SAMRT CONTRACT MANAGMENT</h4>
+                    </div>
+                    <div>
+                      <p> 500$</p>
+                    </div>
+                    <div class="smart-btn">
+                      Choose plan
+                    </div>
+                  </div>
+                  <div class="inner-col card">
+                    <div>
+                      <h4> SAMRT CONTRACT MANAGMENT</h4>
+                    </div>
+                    <div>
+                      <p> 500$</p>
+                    </div>
+                    <div class="smart-btn">
+                      Choose plan
+                    </div>
+                  </div>
+                </div>
+                    <div class="inner-row"> 
+                     <div class="inner-col card">
+                    <div>
+                      <h4> MINTING
+                        <br>WEBSITE</h4>
+                    </div>
+                    <div>
+                      <p> 500$</p>
+                    </div>
+                    <div class="smart-btn">
+                      Choose plan
+                    </div>
+                  </div>
+                  <div class="inner-col card">
+                      <div>
+                      <h4> ART GENERATION WITH RARITIES</h4>
+                    </div>
+                    <div>
+                      <p> 500$</p>
+                    </div>
+                    <div class="smart-btn">
+                      Choose plan
+                    </div>
+                  </div>
+                </div>
+          </div>
+          <div class="service-col2">
+                <h3>CUSTOM REQUEST</h3>
+                <div class="contact-inner">
+              <div class="services-feilds">
+              <input class="tbsearchbar" type="name" placeholder="name" value="">
+              </div>
+              <div class="services-feilds">
+              <input class="tbsearchbar" type="email" placeholder="email" value="">
+              </div>
+              <div class="services-feilds">
+              <input class="tbsearchbar" type="phone" placeholder="phone no" value="">
+              </div>
+            </div>
+
+            <div class="reqst-btn">send offer</div>
+            </div>
+      </div>
+    </div>  
+</section>
+
+<section class="about" id="about">
+  <div class="container">
+      <div class="row">
+        <div class="about-col1">
+              <div class="">
+                <h2>LEARN HOW</h2>
+                <p>By examining over 500+ successful NFT projects our team was able to create a generic smart contract generator that can be used for any NFT project. Skip the development work and the time needed to cerate your NFT smart contract, generate today!</p>
+                <h3>OUR CONTRACT ARE</h3>
+              </div>
+                <div class="inner-row"> 
+                  <div class="inner-col elements">
+                    <img src="img/group-36.png">
+                      <h4> Clean</h4>
+                  </div>
+                  <div class="inner-col elements">
+                    <img src="img/group-37.png">
+                      <h4>Concise</h4>
+                  </div>
+                </div>
+                    <div class="inner-row"> 
+                     <div class="inner-col elements">
+                    <img src="img/group-38.png">
+                     <h4>Optimized</h4>
+                  </div>
+                  <div class="inner-col elements">
+                    <img src="img/group-39.png">
+                      <h4>& Ready for use today</h4>
+                  </div>
+                </div>
+              </div>
+          <div class="about-col2">
+              <div class="about-img">
+                <img src="img/Mask-Group-34.png">
+              </div>
+            </div>
+      </div>
+    </div>  
+</section>
+
+ <section  class="getin" id="getin">
+      <div class="gettin-container">
+        <h2>STEP TO GENERATE YOU CONTRACT</h2>
+        <div class="row">
+          <div class="getin-col">
+              <div class="getin-img">
+              <img src="img/Mask-Group-39.png">
+              </div>
+          </div>
+          <div class="getin-col">
+              <div class="getin-inner">
+                    <img src="img/Group-43.png">
+                    <div><p>CLICK GENRATE</p></div>
+              </div>
+              <div class="getin-inner">
+                    <img src="img/Group-44.png">
+                    <div><p>TYPE IN YOUR PROJECTS INFORMATION</p></div>
+              </div>
+              <div class="getin-inner">
+                    <img src="img/Group-45.png">
+                    <div><p>ADD ON SERVICES AND PAY</p></div>
+              </div>
+              <div class="getin-inner">
+                    <img src="img/Group-46.png">
+                    <div><p>RECEIVE YOUR NFT SMART CONTRACT VIA EMAIL</p></div>
+              </div>
+          </div>
+         </div>
+        </div>
+</section>
+
+<section class="contact-us section" id="contact">
+        <div class="contact-container">
+          <h3>CONTACT US</h3>
+          <div class="row">
+          <div class="contact-col">
+            <div class="contact-inner">
+              <div class="contact-feilds">
+              <input class="input-feilds" type="name" placeholder="name" value="">
+              </div>
+              <div class="contact-feilds">
+              <input class="input-feilds" type="email" placeholder="email" value="">
+              </div>
+              <div class="contact-feilds">
+              <input class="input-feilds" type="Phone" placeholder="phone no" value="">
+              </div>
+            </div>
+          </div>
+          <div class="contact-col">
+            <div class="contact-right">
+              <div class="contact-textarea">
+                  <input class="input-feilds" type="textarea" placeholder="REASON OF MEETING">
+              </div>
+              <div class="contact-btn">
+                   SEND
+              </div>
+            </div>
+          </div>
+         </div>
+        </div>
+</section>
+<footer id="footer">
+     <div class="footer-container">
+      <div class="footer-row">
+        <div class="footer-col1">
+          <div class="footer-img">
+            <figure>
+                <img src="img/alive2.png">
+                <p>By examining over 500+ successful NFT projects our team was able to create a generic smart contract generator that can be used for any NFT project. </p>
+            </figure>
+          </div>
+        </div>
+        <div class="footer-col2">
+          <div class="footer-desc">
+          <h4>Page Navbar</h4>
+          <hr>
+          <ul>
+            <li><a href="#">HOME</a></li>
+            <li><a href="#">GENERATE</a></li>
+            <li><a href="#">LEARN HOW</a></li>
+          </ul>
+          </div>
+        </div>
+        <div class="footer-col3 footer-aside-3">
+          <h4>Contact Us</h4>
+          <hr>
+          <p>Phone No:<br>+11-000-000</p>
+          <p>Email:<br>alive@gmail.com</p>
+        </div>
+        <div class="footer-col4 footer-aside-3">
+        </div>
+      </div>
+     </div>
+<div class="copyright-sec">
+  <div class="social-links">
+    <ul>
+      <li class="fb"><a href="#"><img src="./img/instagram.png"></a></li>
+      <li class="fb"><a href="#"><img src="./img/twitter.png"></a></li>
+      </ul>
+
+  </div>
+</div>
+</footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="./js/isotope.pkgd.min.js"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="./js/app.js"></script> 
+ 
+<script>
+
+$(function() {
+  $('.owl-carousel.testimonial-carousel').owlCarousel({
+    nav: true,
+    navText: ['<i class="fa fa-chevron-left"></i>', '<i class="fa fa-chevron-right"></i>'],
+    dots: false,
+    responsive: {
+      0: {
+        items: 1,
+      },
+      750: {
+        items: 2,
+      }
+    }
+  });
+});
+</script>
+
+<script>
+  $(document).ready(function(){
+$('.btn-next').on('click', function() {
+	
+	var currentStepNum = $('#checkout-progress').data('current-step');
+	var nextStepNum = (currentStepNum + 1);
+	var currentStep = $('.step.step-' + currentStepNum);
+	var nextStep = $('.step.step-' + nextStepNum);
+	var progressBar = $('#checkout-progress');
+	$('.btn-prev').removeClass('');
+	$('#section'+currentStepNum).toggle();
+	$('#section'+nextStepNum).toggle();
+	if(nextStepNum == 4) {
+		$(this).toggle();
+		$('.btn-submit').toggle();
+	}
+	/*if(nextStepNum == 5){
+		$(this).addClass('disabled');
+	}*/
+	$('.checkout-progress').removeClass('.step-' + currentStepNum).addClass('.step-' + (currentStepNum + 1));
+	
+	currentStep.removeClass('active').addClass('valid');
+	currentStep.find('span').addClass('opaque');
+	currentStep.find('.fa.fa-check').removeClass('opaque');
+	
+	nextStep.addClass('active');
+	progressBar.removeAttr('class').addClass('step-' + nextStepNum).data('current-step', nextStepNum);
+});
+
+$('.btn-submit').on('click',function(){
+	$('.btn-submit').toggle('disabled');
+	$('.btn-prev').toggle();
+	var currentStepNum = $('#checkout-progress').data('current-step');
+	var currentStep = $('.step.step-' + currentStepNum);
+	currentStep.removeClass('active').addClass('valid');
+	currentStep.find('.fa.fa-check').removeClass('opaque');
+});
+$('.btn-submit').on('click',function(){
+  $('.generate-btn').show('');
+  $('.btn-prev').toggle();
+});
+
+$('.btn-prev').on('click', function() {
+	
+	var currentStepNum = $('#checkout-progress').data('current-step');
+	var prevStepNum = (currentStepNum - 1);
+	var currentStep = $('.step.step-' + currentStepNum);
+	var prevStep = $('.step.step-' + prevStepNum);
+	var progressBar = $('#checkout-progress');
+	$('.btn-next').removeClass('disabled');
+	$('#section'+currentStepNum).toggle();
+	$('#section'+prevStepNum).toggle();
+	if(currentStepNum == 4){
+		$('.btn-submit').toggle();
+		$('.btn-next').toggle();
+	}
+	if(currentStepNum == 1) {
+		return false;
+	}
+	if(prevStepNum == 1){
+		$(this).addClass('disabled');
+	}
+	$('.checkout-progress').removeClass('.step-' + currentStepNum).addClass('.step-' + (prevStepNum));
+	
+	currentStep.removeClass('active');
+	prevStep.find('span').removeClass('opaque');
+	prevStep.find('.fa.fa-check').addClass('opaque');
+	
+	prevStep.addClass('active').removeClass('valid');
+	progressBar.removeAttr('class').addClass('step-' + prevStepNum).data('current-step', prevStepNum);
+});
+$(".generate-btn").click(function(){
+    $("#services").show();
+  });
+});
+</script>
+<script>
+  function validateForm() {
+  var x = document.forms["myForm"]["next-step"].value;
+  if (x == "" || x == null) {
+    alert("Name must be filled out");
+  return false;
+  }
+}
+</script>
+<script>
+  function closeMenu() {
+  navbar.classList.remove("open");
+  document.body.classList.remove("stop-scrolling");
+}
+
+hamburger_menu.addEventListener("click", () => {
+  if (!navbar.classList.contains("open")) {
+    navbar.classList.add("open");
+    document.body.classList.add("stop-scrolling");
+  } else {
+    closeMenu();
+  }
+});
+</script>
+  </body>
+</html>
